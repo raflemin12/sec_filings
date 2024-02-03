@@ -16,7 +16,7 @@ def ticker_to_cik(ticker: str, header= HEADERS) -> str:
             return cik
     raise ValueError(f'Ticker {ticker} not found')
 
-def accession_numbers_doc(ticker: str, want_10_k = True, header = HEADERS) -> dict:
+def accession_numbers(ticker: str, want_10_k = True, header = HEADERS) -> list:
     """
     Given the stock ticker, returns a dict of the associated accession number and document
     for forms 10-K or 10-Q 
@@ -26,7 +26,7 @@ def accession_numbers_doc(ticker: str, want_10_k = True, header = HEADERS) -> di
     df = pd.DataFrame.from_dict(ticker_json['filings']['recent'], orient= 'columns')
     if want_10_k:
         ten_k = df[df['form'] == '10-K']
-        return ten_k[['accessionNumber', 'primaryDocument']].to_csv('split', index= False)
+        return ten_k['accessionNumber'].to_list()
     else:
         ten_q = df[df['form'] == '10-Q']
-        return ten_q[['accessionNumber', 'primaryDocument']].to_csv('split', index= False)
+        return ten_q['accessionNumber'].to_list()
