@@ -2,7 +2,7 @@ import requests
 import pandas as pd
 from headers import HEADERS
 
-def ticker_to_cik(ticker: str, header= HEADERS) -> str:
+def ticker_to_cik(ticker: str, leading_zero= True, header= HEADERS) -> str:
     """
     Searches for stock ticker and returns the associated CIK
     """
@@ -12,8 +12,12 @@ def ticker_to_cik(ticker: str, header= HEADERS) -> str:
 
     for company in tickers_json.values():
         if company['ticker'] == ticker:
-            cik = str(company['cik_str']).zfill(10)
-            return cik
+            if leading_zero:
+                cik = str(company['cik_str']).zfill(10)
+                return cik
+            else:
+                cik = str(company['cik_str'])
+                return cik
     raise ValueError(f'Ticker {ticker} not found')
 
 def accession_numbers(ticker: str, want_10_k = True, header = HEADERS) -> list:
