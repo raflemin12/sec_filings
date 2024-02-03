@@ -7,7 +7,8 @@ def ticker_to_cik(ticker: str, headers= HEADERS) -> str:
     Searches for stock ticker and returns the associated CIK
     """
     ticker = ticker.upper()
-    tickers_json = requests.get('https://www.sec.gov/files/company_tickers.json', headers = HEADERS).json()
+    tickers_json = requests.get('https://www.sec.gov/files/company_tickers.json',
+                                headers = HEADERS, timeout= 5).json()
 
     for company in tickers_json.values():
         if company['ticker'] == ticker:
@@ -20,7 +21,8 @@ def accession_numbers_doc(ticker: str, want_10_k = True, header = HEADERS) -> di
     Given the stock ticker, returns a dict of the associated accession number and document
     for forms 10-K or 10-Q 
     """
-    ticker_json = requests.get(f'https://data.sec.gov/submissions/CIK{ticker_to_cik(ticker)}.json', headers= HEADERS).json()
+    ticker_json = requests.get(f'https://data.sec.gov/submissions/CIK{ticker_to_cik(ticker)}.json',
+                               headers= HEADERS, timeout= 5).json()
     df = pd.DataFrame.from_dict(ticker_json['filings']['recent'], orient= 'columns')
     if want_10_k:
         ten_k = df[df['form'] == '10-K']
