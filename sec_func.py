@@ -30,9 +30,9 @@ def accession_numbers(ticker: str, want_10_k = True, header = HEADERS) -> list:
     df = pd.DataFrame.from_dict(ticker_json['filings']['recent'], orient= 'columns')
     if want_10_k:
         ten_k = df[df['form'] == '10-K']
-        return ten_k['accessionNumber'].to_list()
+        return [entry.replace("-", "") for entry in ten_k['accessionNumber'].to_list()]
     ten_q = df[df['form'] == '10-Q']
-    return ten_q['accessionNumber'].to_list()
+    return [entry.replace("-", "") for entry in ten_q['accessionNumber'].to_list()]
 
 def build_archive_url(ticker: str,  accession_number: str) -> str:
     """
