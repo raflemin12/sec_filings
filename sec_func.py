@@ -22,7 +22,7 @@ def ticker_to_cik(ticker: str, leading_zero= True, header= HEADERS) -> str:
 
 def accession_numbers(ticker: str, want_10_k = True, header = HEADERS) -> list:
     """
-    Given the stock ticker, returns a dict of the associated accession number and document
+    Given the stock ticker, returns a list of the associated accession number
     for forms 10-K or 10-Q 
     """
     ticker_json = requests.get(f'https://data.sec.gov/submissions/CIK{ticker_to_cik(ticker)}.json',
@@ -31,9 +31,8 @@ def accession_numbers(ticker: str, want_10_k = True, header = HEADERS) -> list:
     if want_10_k:
         ten_k = df[df['form'] == '10-K']
         return ten_k['accessionNumber'].to_list()
-    else:
-        ten_q = df[df['form'] == '10-Q']
-        return ten_q['accessionNumber'].to_list()
+    ten_q = df[df['form'] == '10-Q']
+    return ten_q['accessionNumber'].to_list()
 
 def build_archive_url(ticker: str,  accession_number: str) -> str:
     """
