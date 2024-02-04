@@ -1,6 +1,7 @@
 import requests
 import pandas as pd
 from headers import HEADERS
+# TODO: Import beautifulsoup library
 
 def ticker_to_cik(ticker: str, leading_zero= True, header= HEADERS) -> str:
     """
@@ -40,3 +41,11 @@ def build_archive_url(ticker: str,  accession_number: str) -> str:
     """
     url = f'https://www.sec.gov/Archives/edgar/data/{ticker_to_cik({ticker},leading_zero= False)}/{accession_number}.FilingSummary.xml'
     return url
+
+# TODO: Get request of xml document using URL from build_archive_url function
+# TODO: Parse xml document using beautifulsoup
+#   look for ShortName : HtmlFileName
+# TODO: Get request HtmlFileName
+# TODO: Parse table into pandas?
+# TODO: Update code into objects?
+# TODO: Breakdown into simpler functions?
