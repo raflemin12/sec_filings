@@ -1,3 +1,5 @@
+from sec_func import *
+
 def main():
     pass
 
