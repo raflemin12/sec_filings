@@ -1,7 +1,7 @@
 import requests
 import pandas as pd
 from headers import HEADERS
-# TODO: Import beautifulsoup library
+from bs4 import BeautifulSoup
 
 def ticker_to_cik(stock_ticker: str, leading_zero= True, header= HEADERS) -> str:
     """
@@ -41,6 +41,10 @@ def build_archive_url(ticker: str,  accession_number: str) -> str:
     """
     url = f'https://www.sec.gov/Archives/edgar/data/{ticker_to_cik(ticker,leading_zero= False)}/{accession_number}.FilingSummary.xml'
     return url
+
+def xml_filing_summary(stock_ticker: str, report_number:str):
+    xml = BeautifulSoup(build_archive_url(ticker= stock_ticker, accession_number= report_number), 'lxml')
+    print(xml.text)
 
 # TODO: Get request of xml document using URL from build_archive_url function
 # TODO: Parse xml document using beautifulsoup
