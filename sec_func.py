@@ -3,11 +3,11 @@ import pandas as pd
 from headers import HEADERS
 # TODO: Import beautifulsoup library
 
-def ticker_to_cik(ticker: str, leading_zero= True, header= HEADERS) -> str:
+def ticker_to_cik(stock_ticker: str, leading_zero= True, header= HEADERS) -> str:
     """
     Searches for stock ticker and returns the associated CIK
     """
-    ticker = ticker.upper()
+    ticker = stock_ticker.upper()
     tickers_json = requests.get('https://www.sec.gov/files/company_tickers.json',
                                 headers = header, timeout= 5).json()
 
@@ -39,7 +39,7 @@ def build_archive_url(ticker: str,  accession_number: str) -> str:
     """
     Builds a URL needed to get access the SEC archives of a specific report
     """
-    url = f'https://www.sec.gov/Archives/edgar/data/{ticker_to_cik({ticker},leading_zero= False)}/{accession_number}.FilingSummary.xml'
+    url = f'https://www.sec.gov/Archives/edgar/data/{ticker_to_cik(ticker,leading_zero= False)}/{accession_number}.FilingSummary.xml'
     return url
 
 # TODO: Get request of xml document using URL from build_archive_url function
