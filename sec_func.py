@@ -50,15 +50,17 @@ def xml_filing_summary(stock_ticker: str, report_number:str):
     xml = BeautifulSoup(requests.get(url, headers= HEADERS, timeout= 5).text, features= "lxml")
     return xml
 
-def find_statment_html(xml: str):
+def find_statment_html(xml: str) -> dict:
+    """
+    Parses xml document. Looking for report names and associated html documents.
+    Returns a dict where report name = key and html doc = value
+    """
     report_tags_list = xml.find_all('shortname')
     statement_list = [tag.get_text() for tag in report_tags_list]
     html_tags_list = xml.find_all('htmlfilename')
     file_list = [tag.get_text() for tag in html_tags_list]
     return dict(zip(statement_list, file_list))
 
-# TODO: Parse xml document using beautifulsoup
-#   look for ShortName : HtmlFileName
 # TODO: Get request HtmlFileName
 # TODO: Parse table into pandas?
 # TODO: Update code into objects?
