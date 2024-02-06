@@ -57,7 +57,7 @@ def xml_filing_summary(stock_ticker: str, report_number:str):
 def find_statment_html(xml: str) -> dict:
     """
     Parses xml document. Looking for report names and associated html documents.
-    Returns a dict where report name = key and html doc = value
+    Returns a dict {report name: html document}
     """
     report_tags_list = xml.find_all('shortname')
     statement_list = [tag.get_text() for tag in report_tags_list]
