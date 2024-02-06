@@ -35,10 +35,14 @@ def accession_numbers(ticker: str, want_10_k = True, header = HEADERS) -> list:
     ten_q = df[df['form'] == '10-Q']
     return [entry.replace("-", "") for entry in ten_q['accessionNumber'].to_list()]
 
-def build_archive_url(ticker: str,  accession_number: str) -> str:
+def build_archive_url(ticker: str,  accession_number: str, html: str = 'False') -> str:
     """
-    Builds a URL needed to get access the SEC archives of a specific report
+    Builds a URL needed to get access the SEC archives of a specific report.
+    If html passed, will build url to get html document.
     """
+    if html != 'False':
+        url = f'https://www.sec.gov/Archives/edgar/data/{ticker_to_cik(ticker,leading_zero= False)}/{accession_number}/{html}'
+        return url
     url = f'https://www.sec.gov/Archives/edgar/data/{ticker_to_cik(ticker,leading_zero= False)}/{accession_number}/FilingSummary.xml'
     return url
 
