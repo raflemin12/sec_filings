@@ -39,14 +39,17 @@ def build_archive_url(ticker: str,  accession_number: str) -> str:
     """
     Builds a URL needed to get access the SEC archives of a specific report
     """
-    url = f'https://www.sec.gov/Archives/edgar/data/{ticker_to_cik(ticker,leading_zero= False)}/{accession_number}.FilingSummary.xml'
+    url = f'https://www.sec.gov/Archives/edgar/data/{ticker_to_cik(ticker,leading_zero= False)}/{accession_number}/FilingSummary.xml'
     return url
 
 def xml_filing_summary(stock_ticker: str, report_number:str):
-    xml = BeautifulSoup(build_archive_url(ticker= stock_ticker, accession_number= report_number), 'lxml')
-    print(xml.text)
+    """
+    Retrieves the XML document for the specified company and report
+    """
+    url = build_archive_url(ticker= stock_ticker, accession_number= report_number)
+    xml = BeautifulSoup(requests.get(url, headers= HEADERS, timeout= 5).text, 'lxml')
+    print(xml.prettify())
 
-# TODO: Get request of xml document using URL from build_archive_url function
 # TODO: Parse xml document using beautifulsoup
 #   look for ShortName : HtmlFileName
 # TODO: Get request HtmlFileName
