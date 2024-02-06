@@ -47,8 +47,15 @@ def xml_filing_summary(stock_ticker: str, report_number:str):
     Retrieves the XML document for the specified company and report
     """
     url = build_archive_url(ticker= stock_ticker, accession_number= report_number)
-    xml = BeautifulSoup(requests.get(url, headers= HEADERS, timeout= 5).text, 'lxml')
-    print(xml.prettify())
+    xml = BeautifulSoup(requests.get(url, headers= HEADERS, timeout= 5).text, features= "lxml")
+    return xml
+
+def find_statment_html(xml: str):
+    report_tags_list = xml.find_all('shortname')
+    statement_list = [tag.get_text() for tag in report_tags_list]
+    html_tags_list = xml.find_all('htmlfilename')
+    file_list = [tag.get_text() for tag in html_tags_list]
+    return dict(zip(statement_list, file_list))
 
 # TODO: Parse xml document using beautifulsoup
 #   look for ShortName : HtmlFileName
