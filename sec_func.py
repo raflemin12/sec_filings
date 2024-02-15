@@ -59,9 +59,5 @@ def find_statment_html(xml: str) -> dict:
     Parses xml document. Looking for report names and associated html documents.
     Returns a dict {report name: html document}
     """
-    report_tags_list = xml.find_all('shortname')
-    statement_list = [tag.get_text() for tag in report_tags_list]
-    html_tags_list = xml.find_all('htmlfilename')
-    file_list = [tag.get_text() for tag in html_tags_list]
-    d = dict(zip(statement_list, file_list))
-    return pd.DataFrame({'name': list(d.keys()), 'doc': list(d.values())})
+    report_tags_list = xml.find_all('report')
+    return report_tags_list
