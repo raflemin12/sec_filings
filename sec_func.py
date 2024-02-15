@@ -63,9 +63,5 @@ def find_statment_html(xml: str) -> dict:
     statement_list = [tag.get_text() for tag in report_tags_list]
     html_tags_list = xml.find_all('htmlfilename')
     file_list = [tag.get_text() for tag in html_tags_list]
-    return dict(zip(statement_list, file_list))
-
-# TODO: Get request HtmlFileName
-# TODO: Parse table into pandas?
-# TODO: Update code into objects?
-# TODO: Breakdown into simpler functions?
+    d = dict(zip(statement_list, file_list))
+    return pd.DataFrame({'name': list(d.keys()), 'doc': list(d.values())})
