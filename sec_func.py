@@ -60,4 +60,10 @@ def find_statment_html(xml: str) -> dict:
     Returns a dict {report name: html document}
     """
     report_tags_list = xml.find_all('report')
-    return report_tags_list
+
+    statements = {}
+   
+    for report in report_tags_list:
+        if "statement" in report.longname.text.lower():
+            statements[report.shortname.text] = report.htmlfilename.text
+    return statements
