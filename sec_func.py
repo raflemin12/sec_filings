@@ -41,12 +41,14 @@ def build_archive_url(ticker: str,  accession_number: str, html: str= None) -> s
     If html passed, will build url to get html document.
     """
     if html:
-        url = f'https://www.sec.gov/Archives/edgar/data/{ticker_to_cik(ticker,leading_zero= False)}/{accession_number}/{html}'
+        url = ('https://www.sec.gov/Archives/edgar/data/'
+                f'{ticker_to_cik(ticker,leading_zero= False)}/{accession_number}/{html}')
         return url
-    url = f'https://www.sec.gov/Archives/edgar/data/{ticker_to_cik(ticker,leading_zero= False)}/{accession_number}/FilingSummary.xml'
+    url = ('https://www.sec.gov/Archives/edgar/data/'
+            f'{ticker_to_cik(ticker,leading_zero= False)}/{accession_number}/FilingSummary.xml')
     return url
 
-def xml_filing_summary(stock_ticker: str, report_number:str):
+def xml_filing_summary(stock_ticker: str, report_number:str) -> BeautifulSoup:
     """
     Retrieves the XML document for the specified company and report
     """
@@ -62,7 +64,7 @@ def find_statment_html(xml: str) -> dict:
     report_tags_list = xml.find_all('report')
 
     statements = {}
-   
+
     for report in report_tags_list:
         if "statement" in report.longname.text.lower():
             statements[report.shortname.text] = report.htmlfilename.text
